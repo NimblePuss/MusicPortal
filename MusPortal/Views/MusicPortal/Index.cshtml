@@ -1,0 +1,128 @@
+﻿@model IEnumerable<MusPortal.Models.Song>
+
+@{
+    ViewBag.Title = "Index";
+    //if (ViewBag.IsUser == null)
+    //{
+    //    Layout = "~/Views/Shared/_Layout.cshtml";
+    //}
+    //if (ViewBag.IsUser == "user")
+    //{
+    //    Layout = "~/Views/Shared/UserLayout.cshtml";
+    //}
+    Layout = Session["UserName"] == null ? "~/Views/Shared/_Layout.cshtml" : "~/Views/Shared/UserLayout.cshtml";
+}
+
+<h2>Songs:</h2>
+
+<p>
+    @*@if (ViewBag.IsUser == null)
+        {
+
+        }
+        @if (ViewBag.IsUser == "user")
+        {
+            @Html.ActionLink("Create New", "Create")
+        }*@
+    @if (Session["UserName"] == null)
+    {
+
+    }
+    else
+    {
+        @Html.ActionLink("Create New", "Create")
+    }
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @*@Html.DisplayNameFor(model => model.Genres.Name)*@
+            Genre
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            @*@Html.DisplayNameFor(model => model.Path)*@
+            Track
+        </th>
+
+        @*@if (ViewBag.IsUser == null)
+            {
+
+            }
+            @if (ViewBag.IsUser == "user")
+            {
+                <th>
+                    Download
+                </th>
+            }*@
+        @if (Session["UserName"] == null)
+        {
+
+        }
+        else
+        {
+            <th>
+                Download
+            </th>
+        }
+
+        @*@Html.DisplayNameFor(model => model.Path)*@
+
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td class="col-md-2">
+                @Html.DisplayFor(modelItem => item.Genres.Name)
+            </td>
+            <td class="col-md-2">
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td class="col-md-3">
+                @*@Html.DisplayFor(modelItem => item.Path)*@
+
+                <audio controls="controls">
+                    <source src="@Url.Content(@item.Path)" type="audio/mp3" />
+                    <source src="@Url.Content(@item.Path)" type="audio/mpeg" />
+                    <source src="@Url.Content(@item.Path)" type="audio/ogg" />
+                </audio>
+            </td>
+            @*@if (ViewBag.IsUser == null)
+            {
+
+            }
+            @if (ViewBag.IsUser == "user")
+            {
+                <td class="col-md-1">
+                    @Html.ActionLink("Download", "DownloadFile", new { id = item.Id })
+                </td>
+            }*@
+            
+            @if (Session["UserName"] == null)
+            {
+
+            }
+            else
+            {
+                <td class="col-md-1">
+                    @Html.ActionLink("Download", "DownloadFile", new { id = item.Id })
+                </td>
+            }
+            
+
+            <td class="col-md-2">
+                @if (ViewBag.Message != null)
+                {
+                    <div class="form-group col-md-10 text-danger">
+                        @ViewBag.Message
+                    </div>
+                }
+            </td>
+        </tr>
+    }
+
+</table>
